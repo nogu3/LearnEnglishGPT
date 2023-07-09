@@ -5,7 +5,7 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/ruby:1-3.2-bullseye",
 	"containerEnv": {
-		"API_KEY": "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"
+		"API_KEY": "<api-key>"
 	},
 	"customizations": {
 		"vscode": {
@@ -13,6 +13,7 @@
 				// "rebornix.Ruby",
 				"ionutvmi.path-autocomplete",
 				"Shopify.ruby-lsp",
+				"kaiwood.endwise"
 			],
 			"settings": {
 				"rubyLsp.formatter": "rubocop",
