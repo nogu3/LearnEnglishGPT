@@ -4,6 +4,8 @@ source "https://rubygems.org"
 
 gem "ruby-openai"
 
+gem 'activesupport'
+
 group :development do
   gem "rubocop"
   gem 'solargraph', require: false

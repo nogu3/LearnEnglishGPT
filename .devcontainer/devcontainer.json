@@ -14,10 +14,28 @@
 				"ionutvmi.path-autocomplete",
 				"Shopify.ruby-lsp",
 				"castwide.solargraph",
+				"streetsidesoftware.code-spell-checker-canadian-english",
+				"kaiwood.endwise"
+
 			],
 			"settings": {
 				"rubyLsp.formatter": "rubocop",
-				"rubyLsp.rubyVersionManager": "none"
+				"rubyLsp.rubyVersionManager": "none",
+				// 基本的な言語機能のサポート
+				// "ruby.useLanguageServer": true,
+				// Formatで使用するツールを`bundle exec`で実行するかどうか
+				// "ruby.useBundler": true,
+				// `Format Document`で使用するフォーマッターにrubocopを指定
+				// "ruby.format": "rubocop",
+				// Linterにrubocopを指定
+				// "ruby.lint": {
+					// "rubocop": {
+						// "useBundler": true
+					// }
+				// },
+				"solargraph.useBundler": true,
+				"solargraph.hover": true
+
 			}
 		}
 	}

@@ -22,22 +22,5 @@
             "  - 第5文型(S+V+O+C)",
             ""
         ]
-    },
-    {
-        "role":"user",
-        "content": [
-            "# 英文:",
-            "To make the analogy explicit, in Software 1.0, human-engineered source code (e.g. some .cpp files) is compiled into a binary that does useful work.",
-            ""
-        ]
-    },
-    {
-        "role":"user",
-        "content": [
-            "# 日本語訳",
-            "明確な類推を作るためにSoftware1.0では、人間エンジニアのソースコードは(例えば、.cppファイル)、は、役に立つ仕事をするためのバイナリをコンパイルする。",
-            "",
-            "# 出力文："
-        ]
     }
 ]
