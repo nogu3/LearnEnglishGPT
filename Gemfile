@@ -3,8 +3,9 @@
 source "https://rubygems.org"
 
 gem "ruby-openai"
-gem "rubocop"
 
 group :development do
+  gem "rubocop"
+  gem 'solargraph', require: false
   gem "ruby-lsp", require: false
 end

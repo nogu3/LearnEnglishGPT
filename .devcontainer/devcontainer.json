@@ -10,14 +10,14 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				// "rebornix.Ruby",
+				"rebornix.Ruby",
 				"ionutvmi.path-autocomplete",
 				"Shopify.ruby-lsp",
-				"kaiwood.endwise"
+				"castwide.solargraph",
 			],
 			"settings": {
 				"rubyLsp.formatter": "rubocop",
-				"rubyLsp.rubyVersionManager": "rbenv"
+				"rubyLsp.rubyVersionManager": "none"
 			}
 		}
 	}
