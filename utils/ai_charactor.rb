@@ -5,7 +5,7 @@ require 'json'
 require 'active_support'
 require_relative './model'
 require_relative './role'
-require_relative './custom_print'
+require_relative './printer'
 
 class AICharacter
   attr_reader :messages
@@ -21,23 +21,8 @@ class AICharacter
 
   def charactor=(charactor)
     @charactor = charactor
-    @messages = prompt_template
-  end
 
-  def english=(english)
-    message = [
-      '# 英文:',
-      english
-    ]
-    push_message(message)
-  end
-
-  def japanese=(japanese)
-    message = [
-      '# 日本語訳',
-      japanese
-    ]
-    push_message(message)
+    load_prompt
   end
 
   def push_message(content, role: Role::USER)
@@ -47,7 +32,7 @@ class AICharacter
   end
 
   def chat
-    ColoredPrint.p 'assistant: ', ColoredPrint::GREEN
+    Printer.assistant
     @client.chat(
       parameters: {
         model: @model,
@@ -59,12 +44,20 @@ class AICharacter
     )
   end
 
+  def reset
+    @messages = []
+    self.charactor = 'teacher'
+  end
+
   private
 
-  def prompt_template
-    prompt_data = File.open("./prompt/#{@charactor}.json") { |f| JSON.load(f) }
+  def load_prompt
+    prompt = File.open("./prompt/#{@charactor}.json") { |f| JSON.load(f) }
 
-    prompt_data.map(&method(:convert_openai_format))
+    @model = Model.to(prompt.fetch('model'))
+
+    init_prompt = prompt.fetch('init_prompt')
+    @messages = init_prompt.map(&method(:convert_openai_format))
   end
 
   def convert_openai_format(prompt)
@@ -72,13 +65,6 @@ class AICharacter
       value = value.join("\n") if key == 'content'
       [key, value]
     end.to_h
-  end
-
-  def reset
-    # @model = Model::GPT3_5
-    @model = Model::GPT4
-    @messages = []
-    self.charactor = 'teacher'
   end
 
   def print_response(chunk)

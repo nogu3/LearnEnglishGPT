@@ -2,37 +2,34 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/ruby
 {
 	"name": "Ruby",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/ruby:1-3.2-bullseye",
-	"containerEnv": {
-		"API_KEY": "<your-api-key>"
-	},
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "learn_english_gpt",
+	"workspaceFolder": "/workspaces/LearnEnglishGPT",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"rebornix.Ruby",
 				"ionutvmi.path-autocomplete",
-				"Shopify.ruby-lsp",
 				"castwide.solargraph",
 				"streetsidesoftware.code-spell-checker-canadian-english",
-				"kaiwood.endwise"
-
+				"kaiwood.endwise",
+				"ms-azuretools.vscode-docker",
 			],
 			"settings": {
 				"rubyLsp.formatter": "rubocop",
 				"rubyLsp.rubyVersionManager": "none",
 				// 基本的な言語機能のサポート
-				// "ruby.useLanguageServer": true,
+				"ruby.useLanguageServer": true,
 				// Formatで使用するツールを`bundle exec`で実行するかどうか
-				// "ruby.useBundler": true,
+				"ruby.useBundler": true,
 				// `Format Document`で使用するフォーマッターにrubocopを指定
-				// "ruby.format": "rubocop",
+				"ruby.format": "rubocop",
 				// Linterにrubocopを指定
-				// "ruby.lint": {
-					// "rubocop": {
-						// "useBundler": true
-					// }
-				// },
+				"ruby.lint": {
+					"rubocop": {
+						"useBundler": true
+					}
+				},
 				"solargraph.useBundler": true,
 				"solargraph.hover": true
 

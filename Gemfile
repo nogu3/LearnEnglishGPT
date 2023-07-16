@@ -8,6 +8,5 @@ gem 'activesupport'
 
 group :development do
   gem "rubocop"
-  gem 'solargraph', require: false
-  gem "ruby-lsp", require: false
+  gem 'solargraph'
 end

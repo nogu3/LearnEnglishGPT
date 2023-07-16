@@ -1,0 +1,9 @@
+services:
+  learn_english_gpt:
+    build: .
+    volumes:
+      - .:/workspaces/LearnEnglishGPT
+    environment:
+      - API_KEY=<your-api-key>
+    tty: true
+    
