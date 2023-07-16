@@ -9,17 +9,23 @@ character = AICharacter.new
 loop do
   Printer.user
   input = gets
-  if  input.start_with?('exit')
+  case input
+  when /exit/
     exit
-  elsif input.start_with?('/p')
-    character.push_message(input.gsub('/p', ''))
+  when %r{/p.*}
+    character.push_message(input.gsub('/p ', ''))
     Printer.system('append message is done!')
-  elsif input.start_with?('/show')
-    puts character.messages
-  elsif input.start_with?('/reset')
+  when %r{/show.*}
+    Printer.system(character.model)
+    Printer.system(character.messages)
+  when %r{/reset.*}
     character.reset
+  when %r{/model.*}
+    model_name = input.gsub('/model ', '').chomp
+    character.model = model_name
+    Printer.system("change model to #{character.model}")
   else
-    character.push_message(input)
+    character.push_message(input) if input.present?
     character.chat
   end
 end

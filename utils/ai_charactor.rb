@@ -8,7 +8,7 @@ require_relative './role'
 require_relative './printer'
 
 class AICharacter
-  attr_reader :messages
+  attr_reader :messages, :model
 
   def initialize
     api_key = ENV['API_KEY']
@@ -23,6 +23,10 @@ class AICharacter
     @charactor = charactor
 
     load_prompt
+  end
+
+  def model=(model_name)
+    @model = Model.to(model_name)
   end
 
   def push_message(content, role: Role::USER)
@@ -54,7 +58,7 @@ class AICharacter
   def load_prompt
     prompt = File.open("./prompt/#{@charactor}.json") { |f| JSON.load(f) }
 
-    @model = Model.to(prompt.fetch('model'))
+    self.model = prompt.fetch('model')
 
     init_prompt = prompt.fetch('init_prompt')
     @messages = init_prompt.map(&method(:convert_openai_format))

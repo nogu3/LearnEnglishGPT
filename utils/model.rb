@@ -14,7 +14,7 @@ module Model
     when 'GPT4'
       Model::GPT4
     else
-      raise "model #{model_name} is not found."
+      Printer.system("model #{model_name} is not found.")
     end
   end
 

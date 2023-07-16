@@ -16,11 +16,11 @@ module Printer
   end
 
   def system(message = '')
-    p('system', message, GREEN)
+    p('System', message, GREEN)
   end
 
   def assistant(message = '')
-    p('assistant', message, YELLOW)
+    p('Assistant', message, YELLOW)
   end
 
   module_function :user, :system, :assistant, :p, :colored_print
