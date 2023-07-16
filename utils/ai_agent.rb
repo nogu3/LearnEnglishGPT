@@ -7,7 +7,7 @@ require_relative './model'
 require_relative './role'
 require_relative './printer'
 
-class AICharacter
+class AIAgent
   attr_reader :messages, :model
 
   def initialize

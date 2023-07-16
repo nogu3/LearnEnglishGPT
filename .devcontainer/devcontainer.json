@@ -3,8 +3,8 @@
 {
 	"name": "Ruby",
 	"dockerComposeFile": "../docker-compose.yml",
-	"service": "learn_english_gpt",
-	"workspaceFolder": "/workspaces/LearnEnglishGPT",
+	"service": "aia",
+	"workspaceFolder": "/workspaces/aia",
 	"customizations": {
 		"vscode": {
 			"extensions": [

@@ -1,10 +1,10 @@
 #! /usr/local/bin/ruby
 # frozen_string_literal: true
 
-require_relative './utils/ai_charactor'
+require_relative './utils/ai_agent'
 require_relative './utils/printer'
 
-character = AICharacter.new
+character = AIAgent.new
 
 loop do
   Printer.user

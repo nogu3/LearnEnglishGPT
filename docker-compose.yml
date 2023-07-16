@@ -1,8 +1,8 @@
 services:
-  learn_english_gpt:
+  aia:
     build: .
     volumes:
-      - .:/workspaces/LearnEnglishGPT
+      - .:/workspaces/aia
     environment:
       - API_KEY=<your-api-key>
     tty: true

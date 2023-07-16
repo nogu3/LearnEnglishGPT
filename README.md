@@ -1,2 +1,2 @@
-# LearnEnglishGPT
-GPTをつかって英語学習をサポートします。
+# aia(AIAgent)
+cliでaiagentを召喚します。
