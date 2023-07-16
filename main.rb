@@ -4,28 +4,41 @@
 require_relative './utils/ai_agent'
 require_relative './utils/printer'
 
-character = AIAgent.new
+agent = AIAgent.new
 
 loop do
   Printer.user
   input = gets
+
+  if AIAgent.fetch_charactors.include?(input.chomp)
+    agent.charactor = input.gsub('/', '').chomp
+    next
+  end
+
   case input
   when /exit/
     exit
+  when AIAgent.fetch_charactors.include?(input.chomp)
+    agent.charactor = input
   when %r{/p.*}
-    character.push_message(input.gsub('/p ', ''))
+    agent.push_message(input.gsub('/p ', ''))
     Printer.system('append message is done!')
+  when %r{/charactor.*}
+    Printer.system(AIAgent.fetch_charactors)
   when %r{/show.*}
-    Printer.system(character.model)
-    Printer.system(character.messages)
+    Printer.system(agent.model)
+    Printer.system(agent.messages)
   when %r{/reset.*}
-    character.reset
+    agent.reset
+  # reset message
+  when %r{/rm.*}
+    agent.reset_message
   when %r{/model.*}
     model_name = input.gsub('/model ', '').chomp
-    character.model = model_name
-    Printer.system("change model to #{character.model}")
+    agent.model = model_name
+    Printer.system("change model to #{agent.model}")
   else
-    character.push_message(input) if input.present?
-    character.chat
+    agent.push_message(input) if input.present?
+    agent.chat
   end
 end

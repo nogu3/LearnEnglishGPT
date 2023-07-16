@@ -19,9 +19,16 @@ class AIAgent
     reset
   end
 
+  def self.fetch_charactors
+    Dir.entries('./prompt')
+       .reject { |file_path| ['.', '..'].include?(file_path) }
+       .map { |file_path| "/#{file_path.gsub('.json', '')}" }
+  end
+
   def charactor=(charactor)
     @charactor = charactor
 
+    reset_message
     load_prompt
   end
 
@@ -42,15 +49,18 @@ class AIAgent
         model: @model,
         messages: @messages,
         temperature: 0.7,
-        max_tokens: 3000,
+        max_tokens: 1000,
         stream: proc { |chunk, _bytesize| print_response(chunk) }
       }
     )
   end
 
   def reset
-    @messages = []
-    self.charactor = 'teacher'
+    self.charactor = 'default'
+  end
+
+  def reset_message
+    @messages = @defalut_messages
   end
 
   private
@@ -61,7 +71,8 @@ class AIAgent
     self.model = prompt.fetch('model')
 
     init_prompt = prompt.fetch('init_prompt')
-    @messages = init_prompt.map(&method(:convert_openai_format))
+    @defalut_messages = init_prompt.map(&method(:convert_openai_format))
+    @messages = @defalut_messages.dup
   end
 
   def convert_openai_format(prompt)
