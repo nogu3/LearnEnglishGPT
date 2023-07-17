@@ -1,28 +1,41 @@
+require 'readline'
+require_relative './role'
 module Printer
   RED = 31
   GREEN = 32
   YELLOW = 33
   def colored_print(message, color)
-    print "\e[#{color}m#{message}\e[0m"
+    "\e[#{color}m#{message}\e[0m"
   end
 
-  def p(role_name, message, color)
-    colored_print("#{role_name}: ", color)
+  def create_role_print(role)
+    output_name = Role.get_output_name(role)
+    color = Role.get_color(role)
+    colored_print("#{output_name}: ", color)
+  end
+
+  def p(role, message)
+    print create_role_print(role)
     puts message if message.present?
   end
 
+  def readline
+    role_print = create_role_print(Role::USER)
+    Readline.readline(role_print)
+  end
+
   def user(message = '')
-    p('You', message, RED)
+    p(Role::USER, message)
   end
 
   def system(message = '')
-    p('System', message, GREEN)
+    p(Role::SYSTEM, message)
   end
 
   def assistant(message = '')
-    p('Assistant', message, YELLOW)
+    p(Role::ASSISTANT, message)
   end
 
-  module_function :user, :system, :assistant, :p, :colored_print
-  private_class_method :p, :colored_print
+  module_function :user, :system, :assistant, :p, :colored_print, :create_role_print, :readline
+  private_class_method :p, :colored_print, :create_role_print
 end
