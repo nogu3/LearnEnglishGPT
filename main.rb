@@ -7,8 +7,7 @@ require_relative './utils/printer'
 agent = AIAgent.new
 
 loop do
-  Printer.user
-  input = gets
+  input = Printer.readline
 
   if AIAgent.fetch_charactors.include?(input.chomp)
     agent.charactor = input.gsub('/', '').chomp
@@ -24,7 +23,7 @@ loop do
     agent.push_message(input.gsub('/p ', ''))
     Printer.system('append message is done!')
   when %r{/charactor.*}
-    Printer.system(AIAgent.fetch_charactors)
+    Printer.system(AIAgent.fetch_charactors.join(", "))
   when %r{/show.*}
     Printer.system(agent.model)
     Printer.system(agent.messages)
