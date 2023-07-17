@@ -1,2 +1,2 @@
 # aia(AIAgent)
-cliでaiagentを召喚します。
+Summon AIAgent with cli.
