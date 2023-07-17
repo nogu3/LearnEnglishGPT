@@ -5,10 +5,10 @@ require 'json'
 require 'active_support'
 require_relative './model'
 require_relative './role'
-require_relative './custom_print'
+require_relative './printer'
 
-class AICharacter
-  attr_reader :messages
+class AIAgent
+  attr_reader :messages, :model
 
   def initialize
     api_key = ENV['API_KEY']
@@ -19,25 +19,21 @@ class AICharacter
     reset
   end
 
+  def self.fetch_charactors
+    Dir.entries('./prompt')
+       .reject { |file_path| ['.', '..'].include?(file_path) }
+       .map { |file_path| "/#{file_path.gsub('.json', '')}" }
+  end
+
   def charactor=(charactor)
     @charactor = charactor
-    @messages = prompt_template
+
+    reset_message
+    load_prompt
   end
 
-  def english=(english)
-    message = [
-      '# 英文:',
-      english
-    ]
-    push_message(message)
-  end
-
-  def japanese=(japanese)
-    message = [
-      '# 日本語訳',
-      japanese
-    ]
-    push_message(message)
+  def model=(model_name)
+    @model = Model.to(model_name)
   end
 
   def push_message(content, role: Role::USER)
@@ -47,24 +43,36 @@ class AICharacter
   end
 
   def chat
-    ColoredPrint.p 'assistant: ', ColoredPrint::GREEN
+    Printer.assistant
     @client.chat(
       parameters: {
         model: @model,
         messages: @messages,
         temperature: 0.7,
-        max_tokens: 3000,
+        max_tokens: 1000,
         stream: proc { |chunk, _bytesize| print_response(chunk) }
       }
     )
   end
 
+  def reset
+    self.charactor = 'default'
+  end
+
+  def reset_message
+    @messages = @defalut_messages
+  end
+
   private
 
-  def prompt_template
-    prompt_data = File.open("./prompt/#{@charactor}.json") { |f| JSON.load(f) }
+  def load_prompt
+    prompt = File.open("./prompt/#{@charactor}.json") { |f| JSON.load(f) }
 
-    prompt_data.map(&method(:convert_openai_format))
+    self.model = prompt.fetch('model')
+
+    init_prompt = prompt.fetch('init_prompt')
+    @defalut_messages = init_prompt.map(&method(:convert_openai_format))
+    @messages = @defalut_messages.dup
   end
 
   def convert_openai_format(prompt)
@@ -72,13 +80,6 @@ class AICharacter
       value = value.join("\n") if key == 'content'
       [key, value]
     end.to_h
-  end
-
-  def reset
-    # @model = Model::GPT3_5
-    @model = Model::GPT4
-    @messages = []
-    self.charactor = 'teacher'
   end
 
   def print_response(chunk)

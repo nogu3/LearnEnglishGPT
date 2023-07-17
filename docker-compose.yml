@@ -1,0 +1,9 @@
+services:
+  aia:
+    build: .
+    volumes:
+      - .:/workspaces/aia
+    environment:
+      - API_KEY=<your-api-key>
+    tty: true
+    

@@ -1,31 +1,43 @@
 #! /usr/local/bin/ruby
 # frozen_string_literal: true
 
-require_relative './utils/ai_charactor'
-require_relative './utils/custom_print'
+require_relative './utils/ai_agent'
+require_relative './utils/printer'
 
-character = AICharacter.new
+agent = AIAgent.new
 
 loop do
-  ColoredPrint.p 'You: '
-  input = gets
-  if  input.start_with?('exit')
+  input = Printer.readline
+
+  if AIAgent.fetch_charactors.include?(input.chomp)
+    agent.charactor = input.gsub('/', '').chomp
+    next
+  end
+
+  case input
+  when /exit/
     exit
-  elsif input.start_with?('/e')
-    character.english = input.gsub('/e', '')
-    ColoredPrint.p 'assistant: ', ColoredPrint::GREEN
-    puts '今回の英文はこれですね。今回も頑張りましょう！'
-  elsif input.start_with?('/j')
-    character.japanese = input.gsub('/j', '')
-    ColoredPrint.p 'assistant: ', ColoredPrint::GREEN
-    puts '日本語訳はこれですね。ありがとうございます！'
-    character.chat
-  elsif input.start_with?('/show')
-    puts character.messages
-  elsif input.start_with?('/reset')
-    character.reset
+  when AIAgent.fetch_charactors.include?(input.chomp)
+    agent.charactor = input
+  when %r{/p.*}
+    agent.push_message(input.gsub('/p ', ''))
+    Printer.system('append message is done!')
+  when %r{/charactor.*}
+    Printer.system(AIAgent.fetch_charactors.join(", "))
+  when %r{/show.*}
+    Printer.system(agent.model)
+    Printer.system(agent.messages)
+  when %r{/reset.*}
+    agent.reset
+  # reset message
+  when %r{/rm.*}
+    agent.reset_message
+  when %r{/model.*}
+    model_name = input.gsub('/model ', '').chomp
+    agent.model = model_name
+    Printer.system("change model to #{agent.model}")
   else
-    character.push_message(input)
-    character.chat
+    agent.push_message(input) if input.present?
+    agent.chat
   end
 end
