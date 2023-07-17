@@ -4,40 +4,89 @@
 require_relative './utils/ai_agent'
 require_relative './utils/printer'
 
-agent = AIAgent.new
+class Main
+  COMMANDS = {
+    "exit": :exit_aia,
+    "/p": :push_message,
+    "/charactor": :charactor,
+    "/show": :show_ai_info,
+    "/reset": :reset,
+    "/rm": :reset_message,
+    "/model": :change_model,
+    "/help": :help
+  }.freeze
 
-loop do
-  input = Printer.readline
-
-  if AIAgent.fetch_charactors.include?(input.chomp)
-    agent.charactor = input.gsub('/', '').chomp
-    next
+  def initialize
+    @agent = AIAgent.new
   end
 
-  case input
-  when /exit/
+  def start
+    loop do
+      input = Printer.readline
+
+      next if change_chractor(input)
+      next if run_command(input)
+
+      @agent.push_message(input) if input.present?
+      @agent.chat
+    end
+  end
+
+  private
+
+  def change_chractor(input)
+    return false unless AIAgent.fetch_charactors.include?(input.chomp)
+
+    @agent.charactor = input.gsub('/', '').chomp
+    true
+  end
+
+  def run_command(input)
+    function_symbol = COMMANDS.filter { |command_name, _| input.start_with?(command_name.to_s) }
+                              .map { |_, function_name| function_name }
+                              .first
+    return false if function_symbol.nil?
+
+    send(function_symbol, input)
+    true
+  end
+
+  def exit_aia(_input)
     exit
-  when AIAgent.fetch_charactors.include?(input.chomp)
-    agent.charactor = input
-  when %r{/p.*}
-    agent.push_message(input.gsub('/p ', ''))
+  end
+
+  def push_message(input)
+    @agent.push_message(input.gsub('/p ', ''))
     Printer.system('append message is done!')
-  when %r{/charactor.*}
-    Printer.system(AIAgent.fetch_charactors.join(", "))
-  when %r{/show.*}
-    Printer.system(agent.model)
-    Printer.system(agent.messages)
-  when %r{/reset.*}
-    agent.reset
-  # reset message
-  when %r{/rm.*}
-    agent.reset_message
-  when %r{/model.*}
+  end
+
+  def charactor(_input)
+    Printer.system(AIAgent.fetch_charactors.join(', '))
+  end
+
+  def show_ai_info(_input)
+    Printer.system(@agent.model)
+    Printer.system(@agent.messages)
+  end
+
+  def reset(_input)
+    @agent.reset
+  end
+
+  def reset_message(_input)
+    @agent.reset_message
+  end
+
+  def change_model(input)
     model_name = input.gsub('/model ', '').chomp
-    agent.model = model_name
-    Printer.system("change model to #{agent.model}")
-  else
-    agent.push_message(input) if input.present?
-    agent.chat
+    @agent.model = model_name
+    Printer.system("change model to #{@agent.model}")
+  end
+
+  def help(_input)
+    Printer.system(COMMANDS.keys.join(', '))
   end
 end
+
+main = Main.new
+main.start
