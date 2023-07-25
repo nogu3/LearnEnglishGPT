@@ -1,5 +1,6 @@
 {
     "model": "GPT3.5",
+    "source": "https://prompt.quel.jp/prompt.php?pid=10174",
     "init_prompt": [
         {
             "role": "system",

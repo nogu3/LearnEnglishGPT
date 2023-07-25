@@ -56,7 +56,8 @@ class AIAgent
   end
 
   def reset
-    self.charactor = 'default'
+    # TODO: default charactor search from prompt folder
+    self.charactor = 'jarvis'
   end
 
   def reset_message
