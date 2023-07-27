@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 module Model
-  GPT3_5 = 'gpt-3.5-turbo'
-  GPT3_5_16K = 'gpt-3.5-turbo-16k'
-  GPT4 = 'gpt-4'
+  LISTS = {
+    'GPT3.5' => 'gpt-3.5-turbo',
+    'GPT3.5_16K' => 'gpt-3.5-turbo-16k',
+    'GPT4' => 'gpt-4'
+  }.freeze
 
   def to(model_name)
-    case model_name.to_s.upcase
-    when 'GPT3.5'
-      Model::GPT3_5
-    when 'GPT3.5_16K'
-      Model::GPT3_5_16K
-    when 'GPT4'
-      Model::GPT4
-    else
-      Printer.system("model #{model_name} is not found.")
-    end
+    model = LISTS.fetch(model_name.to_s.upcase, nil)
+
+    error_message = "model \"#{model_name}\" is not found. "\
+                  'Please choose from the supported models. '\
+                  "e.g. #{LISTS.keys.map(&:downcase).join(', ')}"
+    raise NoMethodError, error_message if model.nil?
+
+    model
   end
 
   module_function :to

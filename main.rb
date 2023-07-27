@@ -91,8 +91,12 @@ class Main
 
   def change_model(input)
     model_name = input.gsub('/model ', '').chomp
-    @agent.model = model_name
-    Printer.system("change model to #{@agent.model}")
+    begin
+      @agent.model = model_name
+      Printer.system("change model to #{@agent.model}.")
+    rescue NoMethodError => e
+      Printer.system(e.message)
+    end
   end
 
   def help(_input)
