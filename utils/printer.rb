@@ -1,4 +1,5 @@
 require 'readline'
+require 'tty-prompt'
 require_relative './role'
 module Printer
   RED = 31
@@ -24,6 +25,13 @@ module Printer
     Readline.readline(role_print)
   end
 
+  def multiline
+    role_print = create_role_print(Role::USER)
+
+    prompt = TTY::Prompt.new
+    prompt.multiline(role_print).join("\n")
+  end
+
   def user(message = '')
     p(Role::USER, message)
   end
@@ -36,6 +44,6 @@ module Printer
     p(Role::ASSISTANT, message)
   end
 
-  module_function :user, :system, :assistant, :p, :colored_print, :create_role_print, :readline
+  module_function :user, :system, :assistant, :p, :colored_print, :create_role_print, :readline, :multiline
   private_class_method :p, :colored_print, :create_role_print
 end

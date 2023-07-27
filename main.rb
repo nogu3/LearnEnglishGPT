@@ -13,7 +13,8 @@ class Main
     "/reset": :reset,
     "/rm": :reset_message,
     "/model": :change_model,
-    "/help": :help
+    "/help": :help,
+    "/m": :multiline
   }.freeze
 
   def initialize
@@ -27,12 +28,23 @@ class Main
       next if change_chractor(input)
       next if run_command(input)
 
-      @agent.push_message(input) if input.present?
-      @agent.chat
+      chat(input)
     end
   end
 
   private
+
+  def chat(input)
+    return if input.nil?
+
+    @agent.push_message(input)
+    @agent.chat
+  end
+
+  def multiline(_input)
+    input = Printer.multiline
+    chat(input)
+  end
 
   def change_chractor(input)
     return false unless AIAgent.fetch_charactors.include?(input.chomp)

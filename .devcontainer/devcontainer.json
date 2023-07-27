@@ -8,43 +8,20 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"rebornix.Ruby",
 				"ionutvmi.path-autocomplete",
 				"castwide.solargraph",
 				"streetsidesoftware.code-spell-checker-canadian-english",
 				"kaiwood.endwise",
 				"ms-azuretools.vscode-docker",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"yzhang.markdown-all-in-one"
 			],
 			"settings": {
 				"rubyLsp.formatter": "rubocop",
 				"rubyLsp.rubyVersionManager": "none",
-				// 基本的な言語機能のサポート
-				"ruby.useLanguageServer": true,
-				// Formatで使用するツールを`bundle exec`で実行するかどうか
-				"ruby.useBundler": true,
-				// `Format Document`で使用するフォーマッターにrubocopを指定
-				"ruby.format": "rubocop",
-				// Linterにrubocopを指定
-				"ruby.lint": {
-					"rubocop": {
-						"useBundler": true
-					}
-				},
 				"solargraph.useBundler": true,
 				"solargraph.hover": true
-
 			}
 		}
-	}
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "ruby --version",
-	// Configure tool-specific properties.
-	// "customizations": {},
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	},
 }

@@ -6,6 +6,8 @@ gem "ruby-openai"
 
 gem 'activesupport'
 
+gem 'tty-prompt'
+
 group :development do
   gem "rubocop"
   gem 'solargraph'
