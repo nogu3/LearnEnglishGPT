@@ -8,7 +8,7 @@ class Main
   COMMANDS = {
     "exit": :exit_aia,
     "/p": :push_message,
-    "/charactor": :charactor,
+    "/agent": :agent,
     "/show": :show_ai_info,
     "/reset": :reset,
     "/rm": :reset_message,
@@ -47,9 +47,9 @@ class Main
   end
 
   def change_chractor(input)
-    return false unless AIAgent.fetch_charactors.include?(input.chomp)
+    return false unless AIAgent.fetch_agents.include?(input.chomp)
 
-    @agent.charactor = input.gsub('/', '').chomp
+    @agent.agent = input.gsub('/', '').chomp
     true
   end
 
@@ -72,8 +72,8 @@ class Main
     Printer.system('append message is done!')
   end
 
-  def charactor(_input)
-    Printer.system(AIAgent.fetch_charactors.join(', '))
+  def agent(_input)
+    Printer.system(AIAgent.fetch_agents.join(', '))
   end
 
   def show_ai_info(_input)

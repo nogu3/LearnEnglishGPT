@@ -14,19 +14,20 @@ class AIAgent
     api_key = ENV['API_KEY']
     raise NameError, 'Not define api key.Please define your api key.' if api_key == '<your-api-key>'
 
+    @default_agent = fetch_default_agent
     @client = OpenAI::Client.new(access_token: api_key)
     @gpt_message = ''
     reset
   end
 
-  def self.fetch_charactors
+  def self.fetch_agents
     Dir.entries('./prompt')
        .reject { |file_path| ['.', '..'].include?(file_path) }
        .map { |file_path| "/#{file_path.gsub('.json', '')}" }
   end
 
-  def charactor=(charactor)
-    @charactor = charactor
+  def agent=(agent)
+    @agent = agent
 
     reset_message
     load_prompt
@@ -56,8 +57,7 @@ class AIAgent
   end
 
   def reset
-    # TODO: default charactor search from prompt folder
-    self.charactor = 'jarvis'
+    self.agent = @default_agent
   end
 
   def reset_message
@@ -67,13 +67,17 @@ class AIAgent
   private
 
   def load_prompt
-    prompt = File.open("./prompt/#{@charactor}.json") { |f| JSON.load(f) }
+    prompt = read_prompt(@agent)
 
     self.model = prompt.fetch('model')
 
     init_prompt = prompt.fetch('init_prompt')
     @defalut_messages = init_prompt.map(&method(:convert_openai_format))
     @messages = @defalut_messages.dup
+  end
+
+  def read_prompt(agent)
+    File.open("./prompt/#{agent}.json") { |f| JSON.load(f) }
   end
 
   def convert_openai_format(prompt)
@@ -94,5 +98,11 @@ class AIAgent
     content = chunk.dig('choices', 0, 'delta', 'content')
     print content
     @gpt_message += content
+  end
+
+  def fetch_default_agent
+    AIAgent.fetch_agents
+           .filter_map { |agent_name| agent_name if read_prompt(agent_name).fetch('default', false) }
+           .first
   end
 end
