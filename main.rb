@@ -25,7 +25,7 @@ class Main
     loop do
       input = Printer.readline
 
-      next if change_chractor(input)
+      next if change_agent(input)
       next if run_command(input)
 
       chat(input)
@@ -46,7 +46,7 @@ class Main
     chat(input)
   end
 
-  def change_chractor(input)
+  def change_agent(input)
     return false unless AIAgent.fetch_agents.include?(input.chomp)
 
     @agent.agent = input.gsub('/', '').chomp
