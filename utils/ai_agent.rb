@@ -44,7 +44,7 @@ class AIAgent
   end
 
   def chat
-    Printer.assistant
+    Printer.assistant(speaker_name: @speaker_name)
     @client.chat(
       parameters: {
         model: @model,
@@ -72,6 +72,8 @@ class AIAgent
     self.model = prompt.fetch('model')
 
     init_prompt = prompt.fetch('init_prompt')
+
+    @speaker_name = prompt.fetch('speaker_name', nil)
     @defalut_messages = init_prompt.map(&method(:convert_openai_format))
     @messages = @defalut_messages.dup
   end

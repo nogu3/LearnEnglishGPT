@@ -9,14 +9,14 @@ module Printer
     "\e[#{color}m#{message}\e[0m"
   end
 
-  def create_role_print(role)
-    output_name = Role.get_output_name(role)
+  def create_role_print(role, speaker_name: nil)
+    output_name = speaker_name || Role.get_output_name(role)
     color = Role.get_color(role)
     colored_print("#{output_name}: ", color)
   end
 
-  def p(role, message)
-    print create_role_print(role)
+  def p(role, message, speaker_name: nil)
+    print create_role_print(role, speaker_name: speaker_name)
     puts message if message.present?
   end
 
@@ -40,8 +40,8 @@ module Printer
     p(Role::SYSTEM, message)
   end
 
-  def assistant(message = '')
-    p(Role::ASSISTANT, message)
+  def assistant(message = '', speaker_name: nil)
+    p(Role::ASSISTANT, message, speaker_name: speaker_name)
   end
 
   module_function :user, :system, :assistant, :p, :colored_print, :create_role_print, :readline, :multiline
