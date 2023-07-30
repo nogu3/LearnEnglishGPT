@@ -3,12 +3,17 @@
 require 'openai'
 require 'json'
 require 'active_support'
+require 'active_support/time'
+require 'fileutils'
+
 require_relative './model'
 require_relative './role'
 require_relative './printer'
 
 class AIAgent
   attr_reader :messages, :model
+
+  ROOT_DUMP_DIR = './dump'
 
   def initialize
     api_key = ENV['API_KEY']
@@ -41,6 +46,7 @@ class AIAgent
     content = [content] if content.is_a?(String)
     message = convert_openai_format({ 'role' => role, 'content' => content })
     @messages.push(message)
+    dump
   end
 
   def chat
@@ -62,6 +68,17 @@ class AIAgent
 
   def reset_message
     @messages = @defalut_messages
+    @current_time = Time.now.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d_%H-%M-%S')
+  end
+
+  def dump
+    dump_dir = File.join(ROOT_DUMP_DIR, @agent)
+    FileUtils.mkdir_p(dump_dir) unless Dir.exist?(dump_dir)
+
+    file_path = File.join(dump_dir, "#{@current_time}.json")
+    File.open(file_path, 'w') do |file|
+      file.write(JSON.pretty_generate(@messages))
+    end
   end
 
   private
