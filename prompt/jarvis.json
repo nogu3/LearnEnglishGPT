@@ -1,6 +1,6 @@
 {
     "default": true,
-    "model": "GPT4",
+    "model": "GPT3.5",
     "source": "ironman",
     "speaker_name": "jarvis",
     "init_prompt": [
