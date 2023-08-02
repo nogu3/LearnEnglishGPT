@@ -34,7 +34,6 @@ class AIAgent
   def agent=(agent)
     @agent = agent
 
-    reset_message
     load_prompt
   end
 
@@ -67,7 +66,7 @@ class AIAgent
   end
 
   def reset_message
-    @messages = @defalut_messages
+    @messages = @defalut_messages.dup
     @current_time = Time.now.in_time_zone('Asia/Tokyo').strftime('%Y-%m-%d_%H-%M-%S')
   end
 
@@ -92,7 +91,7 @@ class AIAgent
 
     @speaker_name = prompt.fetch('speaker_name', nil)
     @defalut_messages = init_prompt.map(&method(:convert_openai_format))
-    @messages = @defalut_messages.dup
+    reset_message
   end
 
   def read_prompt(agent)
