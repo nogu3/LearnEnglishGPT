@@ -53,10 +53,14 @@ class Main
     true
   end
 
+  def get_command_function(input)
+    COMMANDS.filter_map do |command_name, function_name|
+      function_name if input.start_with?(command_name.to_s)
+    end.first
+  end
+
   def run_command(input)
-    function_symbol = COMMANDS.filter { |command_name, _| input.start_with?(command_name.to_s) }
-                              .map { |_, function_name| function_name }
-                              .first
+    function_symbol = get_command_function(input)
     return false if function_symbol.nil?
 
     send(function_symbol, input)
