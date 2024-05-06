@@ -35,7 +35,10 @@ class Main
   private
 
   def chat(input)
-    return if input.nil?
+    unless input.present?
+      Printer.system('Your message is empty. Please message input retry.')
+      return
+    end
 
     @agent.push_message(input)
     @agent.chat
