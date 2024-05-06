@@ -3,9 +3,9 @@
 module Model
   # REF: https://platform.openai.com/docs/models
   LISTS = {
-    'GPT3.5' => 'gpt-3.5-turbo-1106',
-    'GPT3.5_16K' => 'gpt-3.5-turbo-16k',
-    'GPT4' => 'gpt-4-1106-preview'
+    'GPT3.5' => 'gpt-3.5-turbo',
+    'GPT3.5_16K' => 'gpt-3.5-turbo',
+    'GPT4' => 'gpt-4-turbo-preview'
   }.freeze
 
   def to(model_name)
