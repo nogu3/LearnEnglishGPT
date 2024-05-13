@@ -5,7 +5,7 @@ module Model
   LISTS = {
     'GPT3.5' => 'gpt-3.5-turbo',
     'GPT3.5_16K' => 'gpt-3.5-turbo',
-    'GPT4' => 'gpt-4-turbo-preview'
+    'GPT4' => 'gpt-4o'
   }.freeze
 
   def to(model_name)
